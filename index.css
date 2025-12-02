@@ -1,1 +1,42 @@
 @import "tailwindcss";
+.service-select,
+.area-select {
+  appearance: base-select;
+}
+.service-select option,
+.area-select option {
+  padding: 8px;
+}
+.service-select option:hover,
+.area-select option:hover {
+  background: #ff8904;
+  color: #fff;
+  border-radius: 5px;
+}
+.service-select::picker(select),
+.area-select::picker(select) {
+  appearance: base-select;
+  font-size: 18px;
+  font-weight: 400;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  padding: 10px;
+  margin-top: 10px;
+  width: 280px;
+  color: #222;
+  transition: border-color 0.25s;
+  box-shadow: 0px 4px 6px #ccc;
+}
+.service-select::picker-icon,
+.area-select::picker-icon {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border: solid #666;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  transform: rotate(45deg);
+  margin: 5px 3px 0 auto;
+  transition: transform 0.25s ease, margin 0.25s ease;
+}

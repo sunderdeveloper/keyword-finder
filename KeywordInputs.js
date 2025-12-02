@@ -2,10 +2,12 @@ import { useState } from "react";
 import { KeywordsData } from "./KeywordsData";
 import { motion, AnimatePresence } from "framer-motion";
 import { Toaster, toast } from "sonner";
+import { div } from "framer-motion/client";
 
 const KeywordInputs = () => {
   const [service, setService] = useState("");
   const [area, setArea] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [generatedKeywords, setGeneratedKeywords] = useState([]);
 
@@ -33,15 +35,25 @@ const KeywordInputs = () => {
     }
   };
 
+  const itemsPerPage = 5;
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = generatedKeywords.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const totalPages = generatedKeywords.length / itemsPerPage;
+
   return (
     <div>
       <Toaster richColors position="top-right" />
 
-      <div className="mt-16 flex items-center justify-center gap-1.5">
+      <div className=" mt-16 flex-col text-center items-center justify-center md:gap-1.5 md:flex-row">
         <select
           name=""
           id=""
-          className="border-gray-400 border-1 p-2 rounded-md shadow-sm w-2/12 mx-1.5"
+          className="service-select border-gray-400 border-1 py-3 px-4 mb-3 text-lg rounded-lg shadow-gray-400 shadow-md w-10/12 mx-1.5 md:w-2/12 appearance-none bg-white relative z-10"
           value={service}
           onChange={(e) => setService(e.target.value)}
         >
@@ -49,17 +61,16 @@ const KeywordInputs = () => {
           <option value="Dental">Dental</option>
           <option value="Gynecology">Gynecology</option>
           <option value="Orthopedics">Orthopedics</option>
-          <option value="Laparoscopic">Laparoscopic</option>
-          <option value="Endoscopic">Endoscopic</option>
-          <option value="Urology">Urology</option>
           <option value="Neurology">Neurology</option>
+          <option value="Urology">Urology</option>
+
           <option value="Pulmonology">Pulmonology</option>
           <option value="Gastroenterology">Gastroenterology</option>
         </select>
         <select
           name=""
           id=""
-          className="border-gray-400 border-1 p-2 rounded-md shadow-sm w-2/12 mx-1.5"
+          className="area-select border-gray-400 border-1 py-3 px-4 text-lg rounded-lg mb-3 shadow-gray-400 shadow-md w-10/12 mx-1.5 md:w-2/12 appearance-none bg-white relative z-10"
           value={area}
           onChange={(e) => setArea(e.target.value)}
         >
@@ -76,19 +87,19 @@ const KeywordInputs = () => {
         </select>
 
         <button
-          className="px-6 py-2 bg-orange-400 text-white rounded-md cursor-pointer"
+          className="px-8 py-3 bg-orange-400 text-white text-lg font-bold rounded-4xl cursor-pointer mx-auto ml-3 w-fit md:w-auto"
           onClick={showKeywords}
         >
           Search
         </button>
       </div>
 
-      <div className="w-4/12 justify-center m-auto mt-15">
+      <div className="w-12/12 md:w-4/12 justify-center m-auto mt-15">
         <AnimatePresence>
           {generatedKeywords.length > 0 && (
             <div>
               <ul className=" p-8 rounded-md">
-                {generatedKeywords.map((keyword, index) => (
+                {currentItems.map((keyword, index) => (
                   <motion.div
                     key={keyword}
                     initial={{ opacity: 0, y: 0 }}
@@ -98,7 +109,7 @@ const KeywordInputs = () => {
                   >
                     <li
                       key={index}
-                      className="p-3 bg-white rounded shadow-lg mb-2 flex justify-between items-center"
+                      className="p-3 bg-white rounded shadow-gray-400 shadow-md text-lg mb-4 flex justify-between items-center"
                     >
                       <span>{keyword}</span>
                       <button
@@ -126,6 +137,18 @@ const KeywordInputs = () => {
             </div>
           )}
         </AnimatePresence>
+      </div>
+      <div className="w-3/12 items-center justify-center flex text-center m-auto ">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            className="py-2 px-4 bg-orange-400 m-2 text-white rounded-md shadow-lg cursor-pointer"
+            key={i}
+            onClick={() => setCurrentPage(i + 1)}
+            disabled={currentPage === i + 1}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
     </div>
   );

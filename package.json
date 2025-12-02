@@ -4,7 +4,8 @@
   "description": "SEO Helpful keywords at one place",
   "scripts": {
     "test": "jest",
-    "start": "parcel index.html"
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
   },
   "keywords": [
     "SEO",
